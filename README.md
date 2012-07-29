@@ -1,1 +1,1 @@
-test||https://raw.github.com/dimafeng/blog-data/master/README.md
+test||https://raw.github.com/dimafeng/blog-data/master/README.md||test1::test2
