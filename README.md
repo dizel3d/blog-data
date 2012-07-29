@@ -1,2 +1,1 @@
-blog-data
-=========
+test||https://raw.github.com/dimafeng/blog-data/master/README.md
