@@ -1,1 +1,1 @@
-Первая статья||first_article||https://raw.github.com/dimafeng/blog-data/master/articles/test.mdown||
+Первая статья||first_article||https://raw.github.com/dimafeng/blog-data/master/articles/test.mdown||test1::test2
