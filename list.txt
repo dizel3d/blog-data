@@ -1,1 +1,1 @@
-Первая статья||first_article||https://raw.github.com/dimafeng/blog-data/master/articles/test.mdown||
+Liferay + Vaadin||lifera_plus_vaadin||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_plus_vaadin.mdown||liferay::vaadin::tomcat::portlet
