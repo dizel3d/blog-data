@@ -57,162 +57,159 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 
 Установщик запросит перезагрузку, после перезагрузки требуется перейти на вьюху Servers и правым щелчком вызвать меню и выбрать New -> Server
 
-[2.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/2.png)
 
-[3.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/3.png)
 
-[4.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/4.png)
 
 Теперь вы увидете, что появился Liferay 6.1 Tomcat в списке серверов. Из этой же вьюхи вы можете запустить сервер.
 
-[5.png] 
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/5.png)
 
 ## Создание портлета
 
 Теперь перейдем непосредственно к написанию портлета. Для примера мы сделаем портлет который будет отображать список всех пользователей и краткую информацию о выбранном в отдельном окне.
 Идем в меню File -> New -> Other…
 
-[6.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/6.png)
 
 В первом окне визарда нужно выбрать название портлета, все остальные параметры оставляем по умолчанию. Далее на панели Liferay Plugin SDK нажать configure. Нажать Add и указать путь к директории с Liferay SDK. 
 
-[7.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/7.png)
 
-[8.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/8.png)
 
-[9.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/9.png)
 
-[10.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/10.png)
 
 Далее вовращаемся к визарду создания портлета. Жмем Next и выбираем Vaadin.
 
-[11.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/11.png)
 
 После мы должны увидеть следующую структуру проекта:
 
-[12.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/12.png)
 
 Открываем UsersShowApplication.java и пишем: 
 
-<code>
-package UsersShow;
+	package UsersShow;
 
-import java.util.Date;
-import java.util.List;
+	import java.util.Date;
+	import java.util.List;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.vaadin.Application;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.Window;
+	import com.liferay.portal.kernel.exception.SystemException;
+	import com.liferay.portal.model.User;
+	import com.liferay.portal.service.UserLocalServiceUtil;
+	import com.vaadin.Application;
+	import com.vaadin.event.ItemClickEvent;
+	import com.vaadin.ui.Label;
+	import com.vaadin.ui.Panel;
+	import com.vaadin.ui.Table;
+	import com.vaadin.ui.Window;
 
-@SuppressWarnings("serial")
-publicclass UsersShowApplication extends Application {
+	@SuppressWarnings("serial")
+	publicclass UsersShowApplication extends Application {
 
-publicvoid init() {
-final Window window = new Window();
+	publicvoid init() {
+	final Window window = new Window();
 
-setMainWindow(window);
-Table table = new Table();
-table.setSizeFull();
-table.setHeight("200px");
-table.setSelectable(true);
+	setMainWindow(window);
+	Table table = new Table();
+	table.setSizeFull();
+	table.setHeight("200px");
+	table.setSelectable(true);
 
-table.addContainerProperty("Name", String.class, null);
-table.addContainerProperty("Registaratoin date", Date.class, null);
-table.addContainerProperty("E-mail", String.class, null);
+	table.addContainerProperty("Name", String.class, null);
+	table.addContainerProperty("Registaratoin date", Date.class, null);
+	table.addContainerProperty("E-mail", String.class, null);
 
-try {
-/**
- * Получаем всех юзеров из сервиса Liferay'я
- */
-List<User> users = UserLocalServiceUtil.getUsers(0,
-Integer.MAX_VALUE);
+	try {
+	/**
+	 * Получаем всех юзеров из сервиса Liferay'я
+	 */
+	List<User> users = UserLocalServiceUtil.getUsers(0,
+	Integer.MAX_VALUE);
 
-for (User u : users) {
-if (u.isDefaultUser()) {
-continue;
-}
-table.addItem(new Object[] { u.getFullName(),
-u.getCreateDate(), u.getEmailAddress() }, u.getUserId());
-}
-} catch (SystemException e) {
-window.showNotification("Error",
-"Can not load users: " + e.getLocalizedMessage(),
-Window.Notification.TYPE_ERROR_MESSAGE);
-}
+	for (User u : users) {
+	if (u.isDefaultUser()) {
+	continue;
+	}
+	table.addItem(new Object[] { u.getFullName(),
+	u.getCreateDate(), u.getEmailAddress() }, u.getUserId());
+	}
+	} catch (SystemException e) {
+	window.showNotification("Error",
+	"Can not load users: " + e.getLocalizedMessage(),
+	Window.Notification.TYPE_ERROR_MESSAGE);
+	}
 
-final Label detailLable = new Label();
-detailLable.setContentMode(Label.CONTENT_XHTML);
+	final Label detailLable = new Label();
+	detailLable.setContentMode(Label.CONTENT_XHTML);
 
-table.addListener(new ItemClickEvent.ItemClickListener() {
+	table.addListener(new ItemClickEvent.ItemClickListener() {
 
-@Override
-publicvoid itemClick(ItemClickEvent event) {
-try {
-User user = UserLocalServiceUtil.getUserById((Long) event
-.getItemId());
+	@Override
+	publicvoid itemClick(ItemClickEvent event) {
+	try {
+	User user = UserLocalServiceUtil.getUserById((Long) event
+	.getItemId());
 
-StringBuilder sb = new StringBuilder();
+	StringBuilder sb = new StringBuilder();
 
-sb.append("<table>");
-sb.append("<tr><td>Full Name:</td><td>")
-.append(user.getFullName()).append("</td></tr>");
-sb.append("<tr><td>EmailAddress:</td><td>")
-.append(user.getEmailAddress())
-.append("</td></tr>");
-sb.append("<tr><td>Birthday:</td><td>")
-.append(user.getBirthday()).append("</td></tr>");
-sb.append("<tr><td>LastLoginDate:</td><td>")
-.append(user.getLastLoginDate())
-.append("</td></tr>");
-sb.append("</table>");
+	sb.append("<table>");
+	sb.append("<tr><td>Full Name:</td><td>")
+	.append(user.getFullName()).append("</td></tr>");
+	sb.append("<tr><td>EmailAddress:</td><td>")
+	.append(user.getEmailAddress())
+	.append("</td></tr>");
+	sb.append("<tr><td>Birthday:</td><td>")
+	.append(user.getBirthday()).append("</td></tr>");
+	sb.append("<tr><td>LastLoginDate:</td><td>")
+	.append(user.getLastLoginDate())
+	.append("</td></tr>");
+	sb.append("</table>");
 
-detailLable.setValue(sb.toString());
-} catch (Exception e) {
-window.showNotification("Error", "Can not show details: "
-+ e.getLocalizedMessage(),
-Window.Notification.TYPE_ERROR_MESSAGE);
-}
-}
-});
+	detailLable.setValue(sb.toString());
+	} catch (Exception e) {
+	window.showNotification("Error", "Can not show details: "
+	+ e.getLocalizedMessage(),
+	Window.Notification.TYPE_ERROR_MESSAGE);
+	}
+	}
+	});
 
-Panel detailPanel = new Panel("Details");
-detailPanel.addComponent(detailLable);
-window.addComponent(table);
-window.addComponent(detailPanel);
-}
+	Panel detailPanel = new Panel("Details");
+	detailPanel.addComponent(detailLable);
+	window.addComponent(table);
+	window.addComponent(detailPanel);
+	}
 
-}
-</code>
+	}
 
 Я намеренно использую local service, чтобы не усложнять логику примера.
 Это все, что нужно сделать для создания простого портлета.
 Далее деплоим портлет. Кликаем правой клавишей на сервере и выбираем Add and Remove...
 
-[13.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/13.png)
 
 И добавляем наш портлет на правую панель.
 
-[14.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/14.png)
 
 В консоли вы увидете примерно следующие строки
 
-<code>
-13:00:56,662 INFO  [pool-2-thread-2][HotDeployImpl:178] Deploying UsersShow-portlet from queue
-13:00:56,663 INFO  [pool-2-thread-2][PluginPackageUtil:1033] Reading plugin package for UsersShow-portlet
-</code>
+	13:00:56,662 INFO  [pool-2-thread-2][HotDeployImpl:178] Deploying UsersShow-portlet from queue
+	13:00:56,663 INFO  [pool-2-thread-2][PluginPackageUtil:1033] Reading plugin package for UsersShow-portlet
+
 
 Далее переходим на страницу liferay'я. htttp://localhost:8080. Вам требуется залогинится пользователем с правами администратора портала (По умолчанию первый пользователь test@liferay.com является администратором). Переходим на страницу, где будет размещаться наш портлет и на верхнем тулбаре выбрать Add -> More... в списке выбрать UsersShow
 
-[15.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/15.png)
 
-[16.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/16.png)
 
 Обновляем страницу и мы должны увидеть: 
 
-[17.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/17.png)
