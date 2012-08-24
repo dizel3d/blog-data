@@ -5,9 +5,12 @@
 Около полугода я работаю над проектами на основе портала Liferay. Как сказано на сайте http://www.liferay.com, Liferay это энтерпрайз web-платформа для бизнес решений предоставляющая быстрый старт. Но больший интерес представляет тот факт, что это бесплатное и opensource решение. Так же имеется энтерпрайз версия с поддержкой и более быстром фиксе багов, которые в бесплатной версии нередко с первого взгляда ставят в тупик, но большую часть из них можно решить погуглив и почитав багтреккер.
 
 Из коробки Liferay предоставляет немалый набор функций, который можно гибко настраивать. В случае, если этого не хватает в лайфрее прдусмотрелн механизм расширений на основе системы портлетов, поддерживается JSR-168 и JSR-286. В текущей версии мы можем использовать 3 вида портлетов:
-1) Liferay MVC
-2) JSF 2.0
-3) Vaadin
+
+* Liferay MVC
+
+* JSF 2.0
+
+* Vaadin
 
 Сегодня я бы хотел рассказать как создать простой портлет на Vaadin.
 Для начала я бы советовал ознакомится c веб-фреймворком Vaadin, это можно сделать на их сайте https://vaadin.com/home, так же там представлена отличная книга, описывающая большенство "юзкейсов".
@@ -15,20 +18,24 @@
 ##Установка liferay
 
 Первым делом нужно скачать последнюю версию liferay. На момент написания статьи это была 6.1 GA2.
+
 http://www.liferay.com/downloads/liferay-portal/available-releases
+
 Так же требуется скачать Liferay Plugins SDK 6.1 GA 2:
+
 http://www.liferay.com/downloads/liferay-portal/additional-files
 
 Т.к. я имел опыт настройти сервлет контейнера Tomcat, я работаю с "Bundled with Tomcat", но вы можете выбрать любой другой, для вас удобный, сервлет контейнер или aplication server, это не повлияет на дальнейшие шаги.
 
 После распаковки архива, попробуем запустить liferay. Создадим файл portal-ext.properties в корневой директории liferay'я со следующим содержанием: 
 
-<code>
-jdbc.default.driverClassName=com.mysql.jdbc.Driver
-jdbc.default.url=jdbc:mysql://localhost/liferay?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
-jdbc.default.username=root
-jdbc.default.password=
-</code>
+	jdbc.default.driverClassName=com.mysql.jdbc.Driver
+	
+	jdbc.default.url=jdbc:mysql://localhost/liferay?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
+	
+	jdbc.default.username=root
+	
+	jdbc.default.password=
 
 Также необходимо создать соответствующую базу, в данном случае "liferay".
 Далее откроем терминал и перейдем [liferay_path]/tomcat-7.0.27/bin и выполним:
@@ -46,8 +53,7 @@ jdbc.default.password=
 ## Настройка среды разработки 
 Теперь перейдем к настройке среды разработки. Я использую eclipse, советую скачать EE версию с официального сайта. На необходимо установить плагин - Liferay IDE. Для этого перейдем в Eclipse Marketplace. Находим Liferay IDE и устанавливаем.
 
-
-[1.png]
+![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png)
 
 Установщик запросит перезагрузку, после перезагрузки требуется перейти на вьюху Servers и правым щелчком вызвать меню и выбрать New -> Server
 
