@@ -4,7 +4,7 @@
 
 Около полугода я работаю над проектами на основе портала Liferay. Как сказано на сайте http://www.liferay.com, Liferay это энтерпрайз web-платформа для бизнес решений предоставляющая быстрый старт. Но больший интерес представляет тот факт, что это бесплатное и opensource решение. Так же имеется энтерпрайз версия с поддержкой и более быстром фиксе багов, которые в бесплатной версии нередко с первого взгляда ставят в тупик, но большую часть из них можно решить погуглив и почитав багтреккер.
 
-Из коробки Liferay предоставляет немалый набор функций, который можно гибко настраивать. В случае, если этого не хватает в лайфрее прдусмотрелн механизм расширений на основе системы портлетов, поддерживается JSR-168 и JSR-286. В текущей версии мы можем использовать 3 вида портлетов:
+Из коробки Liferay предоставляет немалый набор функций, который можно гибко настраивать. В случае, если этого не хватает в лайфрее предусмотрен механизм расширений на основе системы портлетов, поддерживается JSR-168 и JSR-286. В текущей версии мы можем использовать 3 вида портлетов:
 
 * Liferay MVC
 
@@ -13,17 +13,17 @@
 * Vaadin
 
 Сегодня я бы хотел рассказать как создать простой портлет на Vaadin.
-Для начала я бы советовал ознакомится c веб-фреймворком Vaadin, это можно сделать на их сайте https://vaadin.com/home, так же там представлена отличная книга, описывающая большенство "юзкейсов".
+Для начала я бы советовал ознакомится c веб-фреймворком Vaadin, это можно сделать на их сайте https://vaadin.com/home, так же там представлена отличная книга, описывающая большинство "юзкейсов".
 
 ##Установка liferay
 
 Первым делом нужно скачать последнюю версию liferay. На момент написания статьи это была 6.1 GA2.
 
-http://www.liferay.com/downloads/liferay-portal/available-releases
+[http://www.liferay.com/downloads/liferay-portal/available-releases](http://www.liferay.com/downloads/liferay-portal/available-releases)
 
 Так же требуется скачать Liferay Plugins SDK 6.1 GA 2:
 
-http://www.liferay.com/downloads/liferay-portal/additional-files
+[http://www.liferay.com/downloads/liferay-portal/additional-files](http://www.liferay.com/downloads/liferay-portal/additional-files)
 
 Т.к. я имел опыт настройти сервлет контейнера Tomcat, я работаю с "Bundled with Tomcat", но вы можете выбрать любой другой, для вас удобный, сервлет контейнер или aplication server, это не повлияет на дальнейшие шаги.
 
@@ -38,7 +38,7 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 	jdbc.default.password=
 
 Также необходимо создать соответствующую базу, в данном случае "liferay".
-Далее откроем терминал и перейдем [liferay_path]/tomcat-7.0.27/bin и выполним:
+Далее откроем терминал и перейдем *[liferay_path]/tomcat-7.0.27/bin* и выполним:
 
 <code>
 ./catalina start
@@ -55,7 +55,7 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png)
 
-Установщик запросит перезагрузку, после перезагрузки требуется перейти на вьюху Servers и правым щелчком вызвать меню и выбрать New -> Server
+Установщик запросит перезагрузку, после перезагрузки требуется перейти на представление Servers и правым щелчком вызвать меню и выбрать New -> Server
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/2.png)
 
@@ -63,13 +63,13 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/4.png)
 
-Теперь вы увидете, что появился Liferay 6.1 Tomcat в списке серверов. Из этой же вьюхи вы можете запустить сервер.
+Теперь вы увидете, что появился Liferay 6.1 Tomcat в списке серверов. Из этого же представления вы можете запустить сервер.
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/5.png)
 
 ## Создание портлета
 
-Теперь перейдем непосредственно к написанию портлета. Для примера мы сделаем портлет который будет отображать список всех пользователей и краткую информацию о выбранном в отдельном окне.
+Теперь перейдем непосредственно к написанию портлета. Для примера мы сделаем портлет, который будет отображать список всех пользователей и краткую информацию о выбранном пользователе в отдельном окне.
 Идем в меню File -> New -> Other…
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/6.png)
@@ -84,7 +84,7 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/10.png)
 
-Далее вовращаемся к визарду создания портлета. Жмем Next и выбираем Vaadin.
+Далее возвращаемся к визарду создания портлета. Кликаем **Next** и выбираем Vaadin.
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/11.png)
 
@@ -112,79 +112,79 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 	@SuppressWarnings("serial")
 	publicclass UsersShowApplication extends Application {
 
-	publicvoid init() {
-	final Window window = new Window();
+		publicvoid init() {
+			final Window window = new Window();
 
-	setMainWindow(window);
-	Table table = new Table();
-	table.setSizeFull();
-	table.setHeight("200px");
-	table.setSelectable(true);
+			setMainWindow(window);
+			Table table = new Table();
+			table.setSizeFull();
+			table.setHeight("200px");
+			table.setSelectable(true);
 
-	table.addContainerProperty("Name", String.class, null);
-	table.addContainerProperty("Registaratoin date", Date.class, null);
-	table.addContainerProperty("E-mail", String.class, null);
+			table.addContainerProperty("Name", String.class, null);
+			table.addContainerProperty("Registaratoin date", Date.class, null);
+			table.addContainerProperty("E-mail", String.class, null);
 
-	try {
-	/**
-	 * Получаем всех юзеров из сервиса Liferay'я
-	 */
-	List<User> users = UserLocalServiceUtil.getUsers(0,
-	Integer.MAX_VALUE);
+			try {
+				/**
+				 * Получаем всех юзеров из сервиса Liferay'я
+				 */
+				List<User> users = UserLocalServiceUtil.getUsers(0,
+				Integer.MAX_VALUE);
 
-	for (User u : users) {
-	if (u.isDefaultUser()) {
-	continue;
-	}
-	table.addItem(new Object[] { u.getFullName(),
-	u.getCreateDate(), u.getEmailAddress() }, u.getUserId());
-	}
-	} catch (SystemException e) {
-	window.showNotification("Error",
-	"Can not load users: " + e.getLocalizedMessage(),
-	Window.Notification.TYPE_ERROR_MESSAGE);
-	}
+				for (User u : users) {
+				if (u.isDefaultUser()) {
+				continue;
+				}
+				table.addItem(new Object[] { u.getFullName(),
+				u.getCreateDate(), u.getEmailAddress() }, u.getUserId());
+				}
+			} catch (SystemException e) {
+				window.showNotification("Error",
+				"Can not load users: " + e.getLocalizedMessage(),
+				Window.Notification.TYPE_ERROR_MESSAGE);
+			}
 
-	final Label detailLable = new Label();
-	detailLable.setContentMode(Label.CONTENT_XHTML);
+			final Label detailLable = new Label();
+			detailLable.setContentMode(Label.CONTENT_XHTML);
 
-	table.addListener(new ItemClickEvent.ItemClickListener() {
+			table.addListener(new ItemClickEvent.ItemClickListener() {
 
-	@Override
-	publicvoid itemClick(ItemClickEvent event) {
-	try {
-	User user = UserLocalServiceUtil.getUserById((Long) event
-	.getItemId());
+		@Override
+		publicvoid itemClick(ItemClickEvent event) {
+			try {
+				User user = UserLocalServiceUtil.getUserById((Long) event
+				.getItemId());
 
-	StringBuilder sb = new StringBuilder();
+				StringBuilder sb = new StringBuilder();
 
-	sb.append("<table>");
-	sb.append("<tr><td>Full Name:</td><td>")
-	.append(user.getFullName()).append("</td></tr>");
-	sb.append("<tr><td>EmailAddress:</td><td>")
-	.append(user.getEmailAddress())
-	.append("</td></tr>");
-	sb.append("<tr><td>Birthday:</td><td>")
-	.append(user.getBirthday()).append("</td></tr>");
-	sb.append("<tr><td>LastLoginDate:</td><td>")
-	.append(user.getLastLoginDate())
-	.append("</td></tr>");
-	sb.append("</table>");
+				sb.append("<table>");
+				sb.append("<tr><td>Full Name:</td><td>")
+				.append(user.getFullName()).append("</td></tr>");
+				sb.append("<tr><td>EmailAddress:</td><td>")
+				.append(user.getEmailAddress())
+				.append("</td></tr>");
+				sb.append("<tr><td>Birthday:</td><td>")
+				.append(user.getBirthday()).append("</td></tr>");
+				sb.append("<tr><td>LastLoginDate:</td><td>")
+				.append(user.getLastLoginDate())
+				.append("</td></tr>");
+				sb.append("</table>");
 
-	detailLable.setValue(sb.toString());
-	} catch (Exception e) {
-	window.showNotification("Error", "Can not show details: "
-	+ e.getLocalizedMessage(),
-	Window.Notification.TYPE_ERROR_MESSAGE);
-	}
-	}
-	});
+				detailLable.setValue(sb.toString());
+			} catch (Exception e) {
+				window.showNotification("Error", "Can not show details: "
+				+ e.getLocalizedMessage(),
+				Window.Notification.TYPE_ERROR_MESSAGE);
+			}
+			}
+			});
 
-	Panel detailPanel = new Panel("Details");
-	detailPanel.addComponent(detailLable);
-	window.addComponent(table);
-	window.addComponent(detailPanel);
-	}
+			Panel detailPanel = new Panel("Details");
+			detailPanel.addComponent(detailLable);
+			window.addComponent(table);
+			window.addComponent(detailPanel);
+		}
 
 	}
 
@@ -204,12 +204,12 @@ http://www.liferay.com/downloads/liferay-portal/additional-files
 	13:00:56,663 INFO  [pool-2-thread-2][PluginPackageUtil:1033] Reading plugin package for UsersShow-portlet
 
 
-Далее переходим на страницу liferay'я. htttp://localhost:8080. Вам требуется залогинится пользователем с правами администратора портала (По умолчанию первый пользователь test@liferay.com является администратором). Переходим на страницу, где будет размещаться наш портлет и на верхнем тулбаре выбрать Add -> More... в списке выбрать UsersShow
+Далее переходим на страницу liferay'я [http://localhost:8080](http://localhost:8080). Вам требуется залогинится пользователем с правами администратора портала (По умолчанию первый пользователь test@liferay.com является администратором). Переходим на страницу, где будет размещаться наш портлет и на верхнем тулбаре выбираем *Add -> More...* в списке выбрать *UsersShow*
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/15.png)
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/16.png)
 
-Обновляем страницу и мы должны увидеть: 
+Обновляем страницу, и мы должны увидеть: 
 
 ![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/17.png)
