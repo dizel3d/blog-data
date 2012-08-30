@@ -1,0 +1,31 @@
+#Liferay + Vaadin (часть 2)
+
+[In progress...]
+
+В прошлой статье я рассказал, как установить и настроить Liferay, Liferay SDK, Liferay IDE и создать простой портлет. Сегодня хотелось бы рассмотреть более солжные варианты взаимодействия портлетов с порталом. Прошлый пример имеет несколько очевидных недостатков:
+
+* Данные в портлете не обновляются, Оновление происходит только при "умирании" сессии
+
+* Портлет показывает информацию всем пользователям, даже гостям, не говоря уже ограничениям для ролей
+
+Для решения первой проблемы можно сделать следующее:
+
+	public class PortletApplication extends Application implements PortletListener {
+	
+		@Override
+		public void handleRenderRequest(RenderRequest request, RenderResponse response) {
+			User user = null;
+			try {
+			     user = PortalUtil.getUser(request);
+			} catch (Exception ex) {
+			     _log.fatal(ex);
+			}
+
+			if(getUser()==null || !getUser().equals(user))
+			     setUser(user);
+			     //Обновляем гуи тут
+			}
+		}
+
+	….
+	}
