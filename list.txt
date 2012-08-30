@@ -1,2 +1,2 @@
 Liferay + Vaadin||lifera_plus_vaadin||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_plus_vaadin.mdown||liferay::vaadin::tomcat::portlet
-Liferay + Vaadin (часть 2) [In progress...]||liferay_plus_vaadin2||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_plus_vaadin2.mdown||liferay::vaadin::tomcat::portlet
+Liferay + Vaadin (часть 2) [In progress...]||liferay_plus_vaadin2||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_plus_vaadin2.mdown||liferay::vaadin::portlet
