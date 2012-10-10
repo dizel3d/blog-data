@@ -79,3 +79,52 @@ ServiceBuilder это средство для автоматической ге�
 [!4!]
 
 Теперь приступим к написанию логики сервиса. Вся логика располагается в классе MessageLocalServiceImpl. 
+
+<code>
+
+	package ru.dimafeng.ads.service.impl;
+
+	import java.util.Date;
+	import java.util.List;
+
+	import ru.dimafeng.ads.AdsApplication;
+	import ru.dimafeng.ads.model.Message;
+	import ru.dimafeng.ads.service.base.MessageLocalServiceBaseImpl;
+
+	import com.liferay.portal.kernel.exception.SystemException;
+	import com.liferay.portal.kernel.log.Log;
+	import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+	public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
+
+		private static Log _log = LogFactoryUtil
+				.getLog(MessageLocalServiceImpl.class);
+
+		public Message addMessage(long userId, String content)
+				throws SystemException {
+			_log.info(userId + " " + content);
+			try {
+				long entryId = counterLocalService.increment();
+
+				Message message = messagePersistence.create(entryId);
+				message.setCreateDate(new Date());
+				message.setUserId(entryId);
+				message.setContent(content);
+
+				messagePersistence.update(message, false);
+				
+				return message;
+			} catch (Exception e) {
+				_log.fatal(e.getMessage(), e);
+				throw new SystemException(e);
+			}
+		}
+
+		public List<Message> getMessages(int start, int end) throws SystemException {
+			return messagePersistence.findAll(start, end);
+		}
+	}
+
+</code>
+
+После этого надо сново выполнить таску *build-service*, чтобы сгенерировать все вспомогательные классы и обновить проект. Теперь перейдем к созданию интерфейса. Откроем AdsApplication.java.
