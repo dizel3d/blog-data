@@ -94,6 +94,7 @@ ServiceBuilder это средство для автоматической ге�
 	import com.liferay.portal.kernel.exception.SystemException;
 	import com.liferay.portal.kernel.log.Log;
 	import com.liferay.portal.kernel.log.LogFactoryUtil;
+	import com.liferay.portal.kernel.util.HtmlUtil;
 
 	public class MessageLocalServiceImpl extends MessageLocalServiceBaseImpl {
 
@@ -102,14 +103,13 @@ ServiceBuilder это средство для автоматической ге�
 
 		public Message addMessage(long userId, String content)
 				throws SystemException {
-			_log.info(userId + " " + content);
 			try {
 				long entryId = counterLocalService.increment();
 
 				Message message = messagePersistence.create(entryId);
 				message.setCreateDate(new Date());
-				message.setUserId(entryId);
-				message.setContent(content);
+				message.setUserId(userId);
+				message.setContent(HtmlUtil.escape(content));
 
 				messagePersistence.update(message, false);
 				
@@ -127,4 +127,157 @@ ServiceBuilder это средство для автоматической ге�
 
 </code>
 
-После этого надо сново выполнить таску *build-service*, чтобы сгенерировать все вспомогательные классы и обновить проект. Теперь перейдем к созданию интерфейса. Откроем AdsApplication.java.
+После этого надо сново выполнить таску *build-service*, чтобы сгенерировать все вспомогательные классы и обновить проект. 
+Теперь перейдем к созданию интерфейса. Откроем AdsApplication.java.
+
+<code>
+
+	package ru.dimafeng.ads;
+
+	import java.text.DateFormat;
+	import java.text.SimpleDateFormat;
+
+	import javax.portlet.PortletRequest;
+	import javax.portlet.PortletResponse;
+
+	import ru.dimafeng.ads.model.Message;
+	import ru.dimafeng.ads.service.MessageLocalServiceUtil;
+
+	import com.liferay.portal.kernel.exception.PortalException;
+	import com.liferay.portal.kernel.exception.SystemException;
+	import com.liferay.portal.kernel.log.Log;
+	import com.liferay.portal.kernel.log.LogFactoryUtil;
+	import com.liferay.portal.model.User;
+	import com.liferay.portal.service.UserLocalServiceUtil;
+	import com.liferay.portal.util.PortalUtil;
+	import com.vaadin.Application;
+	import com.vaadin.terminal.gwt.server.PortletRequestListener;
+	import com.vaadin.ui.Button;
+	import com.vaadin.ui.Button.ClickEvent;
+	import com.vaadin.ui.Button.ClickListener;
+	import com.vaadin.ui.HorizontalLayout;
+	import com.vaadin.ui.Label;
+	import com.vaadin.ui.TextField;
+	import com.vaadin.ui.VerticalLayout;
+	import com.vaadin.ui.Window;
+	import com.vaadin.ui.Window.Notification;
+
+	@SuppressWarnings("serial")
+	public class AdsApplication extends Application implements PortletRequestListener {
+
+		private static Log _log = LogFactoryUtil.getLog(AdsApplication.class);
+
+		private static final String DATE_FORMAT = "dd MM yyyy hh:mm";
+		
+		private VerticalLayout mainLayout = new VerticalLayout();
+		private Window window = new Window();
+		
+		public void init() {
+			setMainWindow(window);
+			
+			window.addComponent(mainLayout);
+			window.setSizeFull();
+			mainLayout.setSizeFull();
+			mainLayout.setSpacing(true);
+			refreshUI();
+		}
+		
+		private void refreshUI() {
+			final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT); 
+			
+			mainLayout.removeAllComponents();
+			
+			mainLayout.addComponent(new Button("Обновить", new ClickListener() {
+				
+				@Override
+				public void buttonClick(ClickEvent event) {
+					refreshUI();
+				}
+			}));
+			
+			if (getUser() != null) {
+				final TextField content = new TextField();
+				Button submit = new Button("Отправить", new ClickListener() {
+
+					@Override
+					public void buttonClick(ClickEvent event) {
+						try {
+							MessageLocalServiceUtil.addMessage(((User) getUser())
+									.getUserId(), content.getValue().toString());
+							refreshUI();
+						} catch (Exception e) {
+							_log.fatal(e.getMessage(), e);
+							window.showNotification("Ошибка",
+									e.getLocalizedMessage(),
+									Notification.TYPE_ERROR_MESSAGE);
+						}
+					}
+				});
+
+				HorizontalLayout hl = new HorizontalLayout();
+				
+				hl.addComponent(content);
+				hl.addComponent(submit);
+				
+				mainLayout.addComponent(hl);
+			}
+			
+			try {
+				for (Message m : MessageLocalServiceUtil.getMessages(0,
+						Integer.MAX_VALUE)) {
+					Label messageLabel = new Label();
+					messageLabel.setContentMode(Label.CONTENT_XHTML);
+					User user = null;
+					try {
+						user = UserLocalServiceUtil.getUser(m.getUserId());
+					} catch (PortalException e) {
+						_log.fatal(e);
+					}
+					
+					StringBuilder sb = new StringBuilder();
+					sb.append("<h1>");
+					sb.append(user!=null?user.getFullName():"Неизвестный");
+					sb.append(" написал</h1> ");
+					if(m.getCreateDate()!=null) { 
+						sb.append(dateFormat.format(m.getCreateDate()));
+					}
+					sb.append("<br/>");
+					sb.append(m.getContent());
+					
+					messageLabel.setValue(sb.toString());
+					
+					mainLayout.addComponent(messageLabel);
+				}
+			} catch (SystemException e) {
+				_log.fatal(e.getMessage(), e);
+				window.showNotification("Ошибка", e.getLocalizedMessage(),
+						Notification.TYPE_ERROR_MESSAGE);
+			}
+		}
+
+		@Override
+		public void onRequestStart(PortletRequest request, PortletResponse response) {
+			_log.info(request);
+			User user = null;
+			try {
+				user = PortalUtil.getUser(request);
+			} catch (Exception ex) {
+				_log.fatal(ex);
+			}
+
+			if (getUser() == null || !getUser().equals(user)) {
+				setUser(user);
+				refreshUI();
+			}
+		}
+
+		@Override
+		public void onRequestEnd(PortletRequest request, PortletResponse response) {
+			
+		}
+
+	}
+
+</code>
+
+Теперь деплоим портлет по инструкция прошлой статьи.
