@@ -1,1 +1,2 @@
 Liferay + Vaadin||lifera_plus_vaadin||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_plus_vaadin.mdown||liferay::vaadin::tomcat::portlet
+Liferay ServiceBuilder||lifera_service_builder||https://raw.github.com/dimafeng/blog-data/master/articles/liferay_servicebuilder.mdown||liferay::vaadin::service builder
