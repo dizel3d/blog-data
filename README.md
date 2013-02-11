@@ -1,3 +1,3 @@
 Blog
 
-[dimafeng.ru]
+dimafeng.ru
