@@ -1,0 +1,72 @@
+#Настройка Apache2 proxy для Tomcat
+
+##Мотивация
+Для начала разберемся, для чего это может понадобиться. 
+В статьях и инструкциях я встречал 2 случая:
+
+* Случай, когда у нас есть сайт запущенный на apache, например это может быть php сайт. И мы хотим запустить java сайт на том же порту.
+
+* У нас есть 2 или более tomcat контейнера на одном сервере, и мы хотим чтобы сайты были доступны на 80 порту.
+
+В моем случае это была необходимость запустить 2 инстанса Liferay на одном сервере на 80 порту.
+
+##Установка
+
+В моем случае на сервере была Ubuntu. Для установки apachе2 надо выполнить команду
+
+<code>
+# sudo apt-get install apache2
+</code>
+
+Включаем модуль proxy
+
+<code>
+# sudo a2enmod proxy
+</code>
+
+##Настройка
+Откроем */etc/apache2/sites-available/default* в любом текстовом редакторе и замените содержание на:
+
+<code>
+<VirtualHost *:80>
+  ServerName mysite.com
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+
+  <Proxy *>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+
+  ProxyPass / http://localhost:8081/
+  ProxyPassReverse / http://localhost:8081/
+</VirtualHost>
+</code>
+
+Если вы хотите чтобы сайт был доступен на другом порту (не 80), в первой строчке *:80 надо заменить на свой порт. Строки ProxyPass и ProxyPassReverse должны указывать на текущее расположение сайта.
+Для следующего сайта создайте файлы */etc/apache2/sites-available/[имя сайта]* и добавте то же содержание, что и в предыдущем пункте.
+После этого для каждого созданного сайта выполните: 
+<code>
+# sudo a2ensite [имя сайта]
+</code>
+
+После этого перезапустите apache
+<code>
+# sudo service apache2 restart
+</code>
+
+Далее идем в */[tomcat home]/conf/server.xml* и находим активный connector, его нужно изменить следующим образом:
+<code>
+<Connector port="8081" protocol="HTTP/1.1" 
+               connectionTimeout="20000" 
+               redirectPort="8443" 
+                proxyPort="80" 
+                proxyName="mysite.com" 
+                 URIEncoding="UTF-8" />
+</code>
+
+Нужно добавить 2 атрибута proxyPort, proxyName, это результирующий адрес и порт сайта
+
+
+
