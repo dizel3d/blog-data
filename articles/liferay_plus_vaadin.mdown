@@ -53,7 +53,7 @@
 ## Настройка среды разработки 
 Теперь перейдем к настройке среды разработки. Я использую eclipse, советую скачать EE версию с официального сайта. На необходимо установить плагин - Liferay IDE. Для этого перейдем в Eclipse Marketplace. Находим Liferay IDE и устанавливаем.
 
-![https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png]
+![1](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png)
 
 Установщик запросит перезагрузку, после перезагрузки требуется перейти на представление Servers и правым щелчком вызвать меню и выбрать New -> Server
 
