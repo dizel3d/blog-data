@@ -29,6 +29,7 @@
 
 После распаковки архива, попробуем запустить liferay. Создадим файл portal-ext.properties в корневой директории liferay'я со следующим содержанием: 
 
+```
 	jdbc.default.driverClassName=com.mysql.jdbc.Driver
 	
 	jdbc.default.url=jdbc:mysql://localhost/liferay?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false
@@ -36,64 +37,66 @@
 	jdbc.default.username=root
 	
 	jdbc.default.password=
+```
 
 Также необходимо создать соответствующую базу, в данном случае "liferay".
 Далее откроем терминал и перейдем *[liferay_path]/tomcat-7.0.27/bin* и выполним:
 
-<code>
+```
 ./catalina start
-</code>
+```
 
 При первом старте автоматически будет заполнена база тестовым контентом. Примерно через 5 минут откроется окно браузера на главное странице портала, если это не произошло, откройте браузер и перейдите http://localhost:8080. После этого можно остановить liferay командой
 
-<code>
+```
 ./catalina stop
-</code>
+```
 
 ## Настройка среды разработки 
 Теперь перейдем к настройке среды разработки. Я использую eclipse, советую скачать EE версию с официального сайта. На необходимо установить плагин - Liferay IDE. Для этого перейдем в Eclipse Marketplace. Находим Liferay IDE и устанавливаем.
 
-![1](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/1.png)
 
 Установщик запросит перезагрузку, после перезагрузки требуется перейти на представление Servers и правым щелчком вызвать меню и выбрать New -> Server
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/2.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/2.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/3.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/3.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/4.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/4.png)
 
 Теперь вы увидете, что появился Liferay 6.1 Tomcat в списке серверов. Из этого же представления вы можете запустить сервер.
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/5.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/5.png)
 
 ## Создание портлета
 
 Теперь перейдем непосредственно к написанию портлета. Для примера мы сделаем портлет, который будет отображать список всех пользователей и краткую информацию о выбранном пользователе в отдельном окне.
 Идем в меню File -> New -> Other…
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/6.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/6.png)
 
 В первом окне визарда нужно выбрать название портлета, все остальные параметры оставляем по умолчанию. Далее на панели Liferay Plugin SDK нажать configure. Нажать Add и указать путь к директории с Liferay SDK. 
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/7.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/7.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/8.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/8.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/9.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/9.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/10.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/10.png)
 
 Далее возвращаемся к визарду создания портлета. Кликаем **Next** и выбираем Vaadin.
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/11.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/11.png)
 
 После мы должны увидеть следующую структуру проекта:
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/12.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/12.png)
 
 Открываем UsersShowApplication.java и пишем: 
 
+```java
 	package UsersShow;
 
 	import java.util.Date;
@@ -187,29 +190,30 @@
 		}
 
 	}
+```
 
 Я намеренно использую local service, чтобы не усложнять логику примера.
 Это все, что нужно сделать для создания простого портлета.
 Далее деплоим портлет. Кликаем правой клавишей на сервере и выбираем Add and Remove...
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/13.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/13.png)
 
 И добавляем наш портлет на правую панель.
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/14.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/14.png)
 
 В консоли вы увидете примерно следующие строки
-
+```
 	13:00:56,662 INFO  [pool-2-thread-2][HotDeployImpl:178] Deploying UsersShow-portlet from queue
 	13:00:56,663 INFO  [pool-2-thread-2][PluginPackageUtil:1033] Reading plugin package for UsersShow-portlet
-
+```
 
 Далее переходим на страницу liferay'я [http://localhost:8080](http://localhost:8080). Вам требуется залогинится пользователем с правами администратора портала (По умолчанию первый пользователь test@liferay.com является администратором). Переходим на страницу, где будет размещаться наш портлет и на верхнем тулбаре выбираем *Add -> More...* в списке выбрать *UsersShow*
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/15.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/15.png)
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/16.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/16.png)
 
 Обновляем страницу, и мы должны увидеть: 
 
-![](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/17.png)
+![liferay vaadin](https://raw.github.com/dimafeng/blog-data/master/articles/lifera_plus_vaadin/17.png)
