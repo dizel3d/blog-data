@@ -8,21 +8,31 @@
 
 * Используйте HTTP методы (http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Request_methods), вместо параметров запроса (?action=create). Список методов: 
 ```
-  POST для создания  
+  POST для создания
+
   GET для чтения  
+
   DELETE для удаления  
+
   PUT для обновления
 ```
 
 * Используйте HTTP статусы (http://en.wikipedia.org/wiki/List_of_HTTP_status_codes), особенно для ошибок (необходимость аутентификации, ошибки на стороне сервера, неверные параметры)... Вы можете выбирать из:
 ```
   200: OK  
+
   201: Created  
+
   304: Not Modified  
-  400: Bad Request  
+
+  400: Bad Request 
+
   401: Unauthorized  
+
   403: Forbidden  
+
   404: Not Found  
+
   500: Internal Server Error
 ```
 
